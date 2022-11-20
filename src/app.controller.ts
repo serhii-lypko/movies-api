@@ -1,6 +1,6 @@
 import { Controller, Body, Query, Get, Post, Delete } from "@nestjs/common";
 
-import { User } from "./types";
+import { User, Movie } from "./types";
 
 import { Prisma } from "src/services";
 
@@ -26,6 +26,18 @@ export class AppController {
       where: {
         id,
       },
+    });
+  }
+
+  @Get("/movie")
+  async getMovies(): Promise<Movie[]> {
+    return await this.prisma.movie.findMany();
+  }
+
+  @Post("/movie")
+  async createMovie(@Body() movie: Omit<Movie, "id">): Promise<Movie> {
+    return await this.prisma.movie.create({
+      data: movie,
     });
   }
 }
